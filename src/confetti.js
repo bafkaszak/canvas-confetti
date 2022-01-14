@@ -177,8 +177,9 @@
     ticks: 200,
     x: 0.5,
     y: 0.5,
-    shapes: ['square', 'circle'],
-    zIndex: 100,
+    shapes: ['square', 'circle', 'image'],
+    imageSrc: '',
+    zIndex: 1000,
     colors: [
       '#26ccff',
       '#a25afd',
@@ -192,6 +193,9 @@
     disableForReducedMotion: false,
     scalar: 1
   };
+
+  const image = new Image();
+  image.src = defaults.imageSrc;
 
   function convert(val, transform) {
     return transform ? transform(val) : val;
@@ -327,22 +331,29 @@
     var x2 = fetti.wobbleX + (fetti.random * fetti.tiltCos);
     var y2 = fetti.wobbleY + (fetti.random * fetti.tiltSin);
 
-    context.fillStyle = 'rgba(' + fetti.color.r + ', ' + fetti.color.g + ', ' + fetti.color.b + ', ' + (1 - progress) + ')';
-    context.beginPath();
 
     if (fetti.shape === 'circle') {
-      context.ellipse ?
-        context.ellipse(fetti.x, fetti.y, Math.abs(x2 - x1) * fetti.ovalScalar, Math.abs(y2 - y1) * fetti.ovalScalar, Math.PI / 10 * fetti.wobble, 0, 2 * Math.PI) :
+      context.fillStyle = 'rgba(' + fetti.color.r + ', ' + fetti.color.g + ', ' + fetti.color.b + ', ' + (1 - progress) + ')';
+      context.beginPath();
+      context.ellipse ? context.ellipse(fetti.x, fetti.y, Math.abs(x2 - x1) * fetti.ovalScalar, Math.abs(y2 - y1) * fetti.ovalScalar, Math.PI / 10 * fetti.wobble, 0, 2 * Math.PI) :
         ellipse(context, fetti.x, fetti.y, Math.abs(x2 - x1) * fetti.ovalScalar, Math.abs(y2 - y1) * fetti.ovalScalar, Math.PI / 10 * fetti.wobble, 0, 2 * Math.PI);
+      context.closePath();
+      context.fill();
+    } else if (fetti.shape === 'image') {
+      context.globalAlpha = 1 - progress;
+      context.drawImage(image, Math.floor(fetti.x), Math.floor(fetti.y), 25, 25)
+      context.moveTo(Math.floor(fetti.x), Math.floor(fetti.y));
     } else {
+      context.fillStyle = 'rgba(' + fetti.color.r + ', ' + fetti.color.g + ', ' + fetti.color.b + ', ' + (1 - progress) + ')';
+      context.beginPath();
       context.moveTo(Math.floor(fetti.x), Math.floor(fetti.y));
       context.lineTo(Math.floor(fetti.wobbleX), Math.floor(y1));
       context.lineTo(Math.floor(x2), Math.floor(y2));
       context.lineTo(Math.floor(x1), Math.floor(fetti.wobbleY));
+      context.closePath();
+      context.fill();
     }
 
-    context.closePath();
-    context.fill();
 
     return fetti.tick < fetti.totalTicks;
   }
