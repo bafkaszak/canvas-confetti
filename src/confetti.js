@@ -195,10 +195,9 @@
   };
 
   const image = new Image();
-  image.src = defaults.imageSrc;
 
   function convert(val, transform) {
-    return transform ? transform(val) : val;
+    return transform ? transform(val) : val;f
   }
 
   function isOk(val) {
@@ -233,7 +232,7 @@
     var val = String(str).replace(/[^0-9a-f]/gi, '');
 
     if (val.length < 6) {
-        val = val[0]+val[0]+val[1]+val[1]+val[2]+val[2];
+      val = val[0]+val[0]+val[1]+val[1]+val[2]+val[2];
     }
 
     return {
@@ -331,7 +330,6 @@
     var x2 = fetti.wobbleX + (fetti.random * fetti.tiltCos);
     var y2 = fetti.wobbleY + (fetti.random * fetti.tiltSin);
 
-
     if (fetti.shape === 'circle') {
       context.fillStyle = 'rgba(' + fetti.color.r + ', ' + fetti.color.g + ', ' + fetti.color.b + ', ' + (1 - progress) + ')';
       context.beginPath();
@@ -353,7 +351,6 @@
       context.closePath();
       context.fill();
     }
-
 
     return fetti.tick < fetti.totalTicks;
   }
@@ -446,6 +443,7 @@
       var ticks = prop(options, 'ticks', Number);
       var shapes = prop(options, 'shapes');
       var scalar = prop(options, 'scalar');
+      image.src = prop(options, 'imageSrc');
       var origin = getOrigin(options);
 
       var temp = particleCount;
