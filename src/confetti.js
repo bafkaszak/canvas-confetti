@@ -194,10 +194,10 @@
     scalar: 1
   };
 
-  const image = new Image();
+  const image = global.Image;
 
   function convert(val, transform) {
-    return transform ? transform(val) : val;f
+    return transform ? transform(val) : val;
   }
 
   function isOk(val) {
